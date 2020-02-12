@@ -1,0 +1,41 @@
+<div class="container-fluid">
+<p>Розблокування відбувається зі зміною пароля. Введіть логін і натисніть кнопку "Розблокувати"</p>
+<form [formGroup]="form" (ngSubmit)="submit(userLogin.value)">
+  <div class="form-group">
+    <label for="login">Введіть логін</label>
+    <input type="text" class="form-control" id="login" formControlName="userLogin" [(ngModel)]="searchUser" #userLogin/>
+  </div>
+  <button class="btn btn-block btn-success" type="submit">Розблокувати</button>
+
+
+</form>
+<div *ngIf="defaultPassword.includes('Temp')" class="container-fluid justify-content-center"><hr />
+  <p class="message alert-warning">Користувач {{ ICuserLogin }} розблокований. Новий пароль {{ defaultPassword }}. В разі виникнення питань звертайтесь до адміністратора.</p>
+</div>
+<hr />
+  <div class="container">
+<table class="table table-content table-sm table-bordered table-hover">
+  <thead>
+  <th>Логін</th>
+  <th>ПІБ</th>
+  <th>Посада</th>
+  <th>Група</th>
+  </thead>
+  <tbody>
+  <tr
+    *ngFor="let usr of users | searchUser:searchUser | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize"
+    (click)="select(usr.username)"
+    [class.user-disable]="usr.roleid === 1082"
+    [class.user-reset]="usr.locked === 2"
+  >
+    <td>{{usr.username}}</td>
+    <td>{{usr.surname}} {{usr.name}} {{usr.fname}}</td>
+    <td>{{usr.position}}</td>
+    <td>{{usr.rolename}}</td>
+  </tr></tbody>
+</table>
+<ngb-pagination class="d-flex justify-content-center" [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="10">
+</ngb-pagination>
+  </div>
+</div>
+
